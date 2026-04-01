@@ -1,0 +1,109 @@
+<svg xmlns="http://www.w3.org/2000/svg"
+     viewBox="0 0 200 200"
+     width="200"
+     height="200"
+     style="cursor:pointer">
+
+  <!-- DEFINITIONS -->
+  <defs>
+
+    <!-- Animated Gradient -->
+    <linearGradient id="electricGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" stop-color="#22c55e">
+        <animate attributeName="offset" from="0%" to="100%" dur="2s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="50%" stop-color="#38bdf8">
+        <animate attributeName="offset" from="50%" to="150%" dur="2s" repeatCount="indefinite"/>
+      </stop>
+      <stop offset="100%" stop-color="#16a34a">
+        <animate attributeName="offset" from="100%" to="200%" dur="2s" repeatCount="indefinite"/>
+      </stop>
+    </linearGradient>
+
+    <!-- Electric Glow -->
+    <filter id="electricGlow">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feColorMatrix type="matrix"
+        values="1 0 0 0 0
+                0 1 0 0 0
+                0 0 1 0 0
+                0 0 0 1.2 -0.1"/>
+      <feMerge>
+        <feMergeNode in="blur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+
+    <!-- Glitch Offset -->
+    <filter id="glitch">
+      <feTurbulence type="fractalNoise"
+        baseFrequency="0.02"
+        numOctaves="2"
+        seed="2"
+        result="noise">
+        <animate attributeName="baseFrequency"
+          dur="0.15s"
+          values="0.01;0.04;0.01"
+          repeatCount="indefinite"/>
+      </feTurbulence>
+      <feDisplacementMap in="SourceGraphic"
+        in2="noise"
+        scale="6"/>
+    </filter>
+
+  </defs>
+
+  <!-- Background -->
+  <rect width="200" height="200" rx="32" fill="#ffffff"/>
+
+  <!-- CP LOGO -->
+  <g fill="none"
+     stroke="url(#electricGrad)"
+     stroke-width="16"
+     stroke-linecap="butt"
+     stroke-linejoin="miter"
+     filter="url(#electricGlow)">
+
+    <!-- Glitch pulse -->
+    <animate attributeName="opacity"
+             values="1;0.85;1;0.9;1"
+             dur="0.2s"
+             repeatCount="indefinite"/>
+
+    <!-- Hover: stronger glitch -->
+    <set attributeName="filter"
+         to="url(#glitch)"
+         begin="mouseover"/>
+    <set attributeName="filter"
+         to="url(#electricGlow)"
+         begin="mouseout"/>
+
+    <!-- C (Sharp) -->
+    <path d="
+      M140 40
+      L80 40
+      L60 60
+      L60 140
+      L80 160
+      L140 160
+    "/>
+
+    <!-- P Stem -->
+    <path d="
+      M90 40
+      L90 160
+    "/>
+
+    <!-- P Head -->
+    <path d="
+      M90 40
+      L135 40
+      L150 60
+      L150 100
+      L135 120
+      L90 120
+    "/>
+
+  </g>
+
+</svg>

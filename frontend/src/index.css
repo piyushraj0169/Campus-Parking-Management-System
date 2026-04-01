@@ -1,0 +1,222 @@
+/* Custom styles to augment Bootstrap */
+body {
+    background-color: #f8f9fa;
+}
+
+.card {
+    border: none;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+}
+
+.parking-slot {
+    cursor: pointer;
+    transition: all 0.3s;
+}
+
+.parking-slot:hover {
+    transform: scale(1.05);
+}
+
+.parking-slot.occupied {
+    background-color: #ffebee;
+    border-color: #ffcdd2;
+    opacity: 0.8;
+}
+
+.parking-slot.disabled {
+    background-color: #e0e0e0;
+    border-color: #bdbdbd;
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.parking-slot.selected {
+    background-color: #e3f2fd;
+    border-color: #90caf9;
+    box-shadow: 0 0 10px rgba(33, 150, 243, 0.5);
+}
+
+/* Ensure full height layout */
+html,
+body {
+    height: 100%;
+}
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Responsive utilities */
+@media (max-width: 768px) {
+    .container {
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+@media (max-width: 425px) {
+    .container {
+        padding-left: 15px;
+        padding-right: 15px;
+    }
+
+    .display-4 {
+        font-size: 2.5rem !important;
+    }
+}
+
+/* Footer Styles */
+.footer {
+    background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+    color: #e0e0e0;
+    box-shadow: 0 -5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.footer-title {
+    letter-spacing: 1px;
+    border-bottom: 2px solid #0d6efd;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+.footer-link {
+    color: #b0b0b0;
+    text-decoration: none;
+    display: block;
+    padding: 5px 0;
+    transition: all 0.3s ease;
+}
+
+.footer-link:hover {
+    color: #fff;
+    padding-left: 10px;
+    text-decoration: none;
+}
+
+.social-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 50%;
+    color: #fff;
+    transition: all 0.3s ease;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    background: #0d6efd;
+    color: #fff;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(13, 110, 253, 0.4);
+}
+
+.footer-contact li {
+    font-size: 0.95rem;
+}
+
+/* --- Dark Mode Custom Overrides (Premium Aesthetic) --- */
+[data-bs-theme="dark"] body {
+    background-color: #0f172a !important;
+    /* Rich Slate-900 Background */
+    color: #e2e8f0 !important;
+    /* Softer text color */
+}
+
+[data-bs-theme="dark"] .bg-light,
+[data-bs-theme="dark"] .bg-body-tertiary {
+    background-color: #1e293b !important;
+    /* Elevated Surface color */
+}
+
+[data-bs-theme="dark"] .bg-white,
+[data-bs-theme="dark"] .bg-body {
+    background-color: #0f172a !important;
+}
+
+[data-bs-theme="dark"] .text-dark,
+[data-bs-theme="dark"] .text-body {
+    color: #f1f5f9 !important;
+}
+
+[data-bs-theme="dark"] .text-muted {
+    color: #94a3b8 !important;
+}
+
+/* Premium Card Shadows & Borders */
+[data-bs-theme="dark"] .card {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
+}
+
+[data-bs-theme="dark"] .card:hover {
+    box-shadow: 0 10px 15px -3px rgba(59, 130, 246, 0.15), 0 4px 6px -2px rgba(59, 130, 246, 0.05);
+    /* Subtle Blue Neon Glow */
+}
+
+[data-bs-theme="dark"] .modal-content {
+    background-color: #1e293b;
+    border: 1px solid #334155;
+    box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+}
+
+/* Input Fields with Glow Focus */
+[data-bs-theme="dark"] input.form-control,
+[data-bs-theme="dark"] select.form-select {
+    background-color: #0f172a;
+    color: #e2e8f0;
+    border: 1px solid #334155;
+}
+
+[data-bs-theme="dark"] input.form-control:focus,
+[data-bs-theme="dark"] select.form-select:focus {
+    background-color: #1e293b;
+    color: #ffffff;
+    border-color: #3b82f6;
+    box-shadow: 0 0 0 0.25rem rgba(59, 130, 246, 0.25);
+}
+
+/* Glassmorphism Navbar */
+[data-bs-theme="dark"] .navbar {
+    background-color: rgba(15, 23, 42, 0.8) !important;
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid #1e293b;
+}
+
+/* Glowing Parking Slots */
+[data-bs-theme="dark"] .parking-slot.occupied {
+    background-color: #450a0a;
+    border-color: #ef4444;
+}
+
+[data-bs-theme="dark"] .parking-slot.disabled {
+    background-color: #334155;
+    border-color: #475569;
+}
+
+[data-bs-theme="dark"] .parking-slot.selected {
+    background-color: rgba(59, 130, 246, 0.2);
+    border-color: #60a5fa;
+    box-shadow: 0 0 12px rgba(96, 165, 250, 0.4);
+}
+
+[data-bs-theme="dark"] .table-striped>tbody>tr:nth-of-type(odd)>* {
+    color: #e2e8f0;
+    background-color: #1e293b;
+}
+
+[data-bs-theme="dark"] .table {
+    color: #e2e8f0;
+}
