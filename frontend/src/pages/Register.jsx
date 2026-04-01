@@ -162,11 +162,6 @@ const Register = () => {
                                 {loading ? 'Sending OTP...' : 'Send OTP & Verify'}
                             </Button>
                         </Form>
-
-                            <Button variant="primary" type="submit" size="lg" className="w-100 fw-bold" disabled={loading}>
-                                {loading ? 'Sending OTP...' : 'Send OTP & Verify'}
-                            </Button>
-                        </Form>
                     ) : (
                         <Form onSubmit={handleRegister}>
                             <div className="text-center mb-3">
