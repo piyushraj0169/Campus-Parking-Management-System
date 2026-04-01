@@ -23,64 +23,7 @@ const log = (message) => {
     }
 }
 
-// Mailjet API implementation (Uses Port 443 - Works on ANY network)
-const sendEmailViaAPI = async ({ to, subject, html }) => {
-    const apiKey = process.env.MAILJET_API_KEY;
-    const secretKey = process.env.MAILJET_SECRET_KEY;
-    const fromEmail = "piyushrajbeg123@gmail.com";
 
-    if (!apiKey || !secretKey) {
-        throw new Error('MAILJET_API_KEY or MAILJET_SECRET_KEY is missing in .env file.');
-    }
-
-    try {
-        console.log(`[EMAIL_SERVICE] Attempting Mailjet API delivery to: ${to} (Port 443)`);
-        const response = await axios.post('https://api.mailjet.com/v3.1/send', {
-            Messages: [
-                {
-                    From: {
-                        Email: fromEmail,
-                        Name: "Campus Parking"
-                    },
-                    To: [
-                        {
-                            Email: to
-                        }
-                    ],
-                    Subject: subject,
-                    HTMLPart: html
-                }
-            ]
-        }, {
-            auth: {
-                username: apiKey,
-                password: secretKey
-            },
-            headers: {
-                'Content-Type': 'application/json'
-            }
-        });
-
-        const messageStatus = response.data.Messages[0].Status;
-        log(`SUCCESS: Email sent via Mailjet API. Status: ${messageStatus}`);
-        console.log(`[EMAIL_SERVICE] Mailjet SUCCESS: ${messageStatus}`);
-        return true;
-    } catch (error) {
-        let errorDetail = error.response ? JSON.stringify(error.response.data) : error.message;
-
-        if (error.response && error.response.status === 401) {
-            errorDetail = "Mailjet Error: Invalid API Key or Secret Key.";
-        } else if (error.response && error.response.status === 403) {
-            errorDetail = "Mailjet Error: Sender email not verified. Please verify piyushrajbeg123@gmail.com in Mailjet.";
-        } else if (error.response && error.response.status === 400) {
-            errorDetail = `Mailjet Error: Bad request - ${JSON.stringify(error.response.data)}`;
-        }
-
-        console.error('[EMAIL_SERVICE_ERROR] Mailjet failure:', errorDetail);
-        log(`ERROR: Mailjet failure: ${errorDetail}`);
-        throw new Error(errorDetail);
-    }
-};
 
 const sendInvoiceEmail = async (booking, user, paymentDetails) => {
     const html = `
@@ -158,23 +101,19 @@ const sendInvoiceEmail = async (booking, user, paymentDetails) => {
 
 // Nodemailer configuration for Auth Emails (OTP & Password Reset & Invoices)
 const createTransporter = () => {
-    // Determine user, pass from env
-    const user = process.env.AUTH_EMAIL_USER?.trim() || 'campusparking.cgc@gmail.com';
-    const pass = process.env.AUTH_EMAIL_PASS?.trim() || '';
+    const user = process.env.AUTH_EMAIL_USER;
+    const pass = process.env.AUTH_EMAIL_PASS;
+
+    if (!user || !pass) {
+        throw new Error("Email credentials missing");
+    }
 
     return nodemailer.createTransport({
-        host: 'smtp.gmail.com',
-        port: 587,
-        secure: false, // TLS requires secure: false for port 587
-        requireTLS: true,
+        service: "gmail",   // ✅ KEY FIX
         auth: {
-            user: user,
-            pass: pass,
+            user,
+            pass,
         },
-        tls: {
-            rejectUnauthorized: false
-        },
-        family: 4 // IPv4 preference
     });
 };
 
