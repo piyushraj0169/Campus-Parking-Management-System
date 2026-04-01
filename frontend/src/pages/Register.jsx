@@ -12,8 +12,6 @@ const Register = () => {
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [phoneNumber, setPhoneNumber] = useState('+91 ');
-    const [isStaff, setIsStaff] = useState(false);
-    const [staffSecret, setStaffSecret] = useState('');
     const [otp, setOtp] = useState('');
     const { login } = useContext(AuthContext);
     const navigate = useNavigate();
@@ -28,12 +26,6 @@ const Register = () => {
         // Password Validation
         if (password !== confirmPassword) {
             setError("Passwords do not match");
-            setLoading(false);
-            return;
-        }
-
-        if (isStaff && !staffSecret) {
-            setError("Staff Secret Code is required for staff registration");
             setLoading(false);
             return;
         }
@@ -76,13 +68,9 @@ const Register = () => {
         setLoading(true);
         setError(null);
         try {
-            const { data } = await API.post('/users/register', { name, email, password, phoneNumber, otp, isStaff, staffSecret });
+            const { data } = await API.post('/users/register', { name, email, password, phoneNumber, otp });
             login(data);
-            if (data.isStaff) {
-                navigate('/staff-dashboard');
-            } else {
-                navigate('/dashboard');
-            }
+            navigate('/dashboard');
         } catch (err) {
             setError(err.response?.data?.message || 'Registration failed');
         } finally {
@@ -143,9 +131,6 @@ const Register = () => {
                                     placeholder="Enter mobile number"
                                     required
                                 />
-                                <Form.Text className="text-muted">
-                                    Format: +91 XXXXXXXXXX (10 digits)
-                                </Form.Text>
                             </Form.Group>
 
                             <Form.Group className="mb-3">
@@ -173,28 +158,10 @@ const Register = () => {
                                 />
                             </Form.Group>
 
-                            <Form.Group className="mb-3">
-                                <Form.Check
-                                    type="checkbox"
-                                    id="staff-check"
-                                    label="Register as Staff"
-                                    checked={isStaff}
-                                    onChange={(e) => setIsStaff(e.target.checked)}
-                                />
-                            </Form.Group>
-
-                            {isStaff && (
-                                <Form.Group className="mb-4">
-                                    <Form.Label className="fw-bold text-danger">Staff Secret Code</Form.Label>
-                                    <Form.Control
-                                        type="password"
-                                        value={staffSecret}
-                                        onChange={(e) => setStaffSecret(e.target.value)}
-                                        placeholder="Enter Secret Code"
-                                        required
-                                    />
-                                </Form.Group>
-                            )}
+                            <Button variant="primary" type="submit" size="lg" className="w-100 fw-bold" disabled={loading}>
+                                {loading ? 'Sending OTP...' : 'Send OTP & Verify'}
+                            </Button>
+                        </Form>
 
                             <Button variant="primary" type="submit" size="lg" className="w-100 fw-bold" disabled={loading}>
                                 {loading ? 'Sending OTP...' : 'Send OTP & Verify'}
