@@ -1,6 +1,3 @@
-const axios = require('axios');
-const fs = require('fs');
-const path = require('path');
 const nodemailer = require('nodemailer');
 const dns = require('dns');
 
@@ -12,15 +9,9 @@ try {
     console.error("DNS fallback unsupported:", e);
 }
 
-const logFile = path.resolve(__dirname, '../../email_debug.log');
-
 const log = (message) => {
     const timestamp = new Date().toISOString();
-    try {
-        fs.appendFileSync(logFile, `[${timestamp}] ${message}\n`);
-    } catch (e) {
-        console.error("Log error:", e.message);
-    }
+    console.log(`[EMAIL_SERVICE] [${timestamp}] ${message}`);
 }
 
 
@@ -101,19 +92,23 @@ const sendInvoiceEmail = async (booking, user, paymentDetails) => {
 
 // Nodemailer configuration for Auth Emails (OTP & Password Reset & Invoices)
 const createTransporter = () => {
-    const user = process.env.AUTH_EMAIL_USER;
-    const pass = process.env.AUTH_EMAIL_PASS;
-
-    if (!user || !pass) {
-        throw new Error("Email credentials missing");
-    }
+    // Determine user, pass from env
+    const user = process.env.AUTH_EMAIL_USER?.trim() || 'campusparking.cgc@gmail.com';
+    const pass = process.env.AUTH_EMAIL_PASS?.trim() || '';
 
     return nodemailer.createTransport({
-        service: "gmail",   // ✅ KEY FIX
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false, // STARTTLS: secure:false + requireTLS:true
+        requireTLS: true,
         auth: {
-            user,
-            pass,
+            user: user,
+            pass: pass,
         },
+        tls: {
+            rejectUnauthorized: false
+        },
+        family: 4 // Force IPv4
     });
 };
 
