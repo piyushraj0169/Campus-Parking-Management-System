@@ -1,7 +1,10 @@
 import axios from 'axios';
 
-// Use the environment variable if available, otherwise fallback to window.location.hostname
-const baseURL = import.meta.env.VITE_API_URL || `http://${window.location.hostname}:5000/api`;
+// Production backend URL — always use Render deployment
+// VITE_API_URL env var can override this if needed
+const PRODUCTION_API = 'https://campus-parking-management-system.onrender.com/api';
+
+const baseURL = import.meta.env.VITE_API_URL || PRODUCTION_API;
 
 const API = axios.create({
     baseURL,

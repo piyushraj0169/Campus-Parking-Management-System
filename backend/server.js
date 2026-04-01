@@ -23,7 +23,23 @@ const io = new Server(server, {
     }
 });
 
-app.use(cors());
+const allowedOrigins = [
+    'https://campusparkingcgc.vercel.app',
+    'http://localhost:5173',
+    'http://localhost:3000',
+];
+
+app.use(cors({
+    origin: function (origin, callback) {
+        // Allow requests with no origin (mobile apps, curl, Postman)
+        if (!origin) return callback(null, true);
+        if (allowedOrigins.includes(origin)) {
+            return callback(null, true);
+        }
+        return callback(new Error('CORS: Origin not allowed'), false);
+    },
+    credentials: true,
+}));
 app.use(express.json());
 
 // Make io accessible to our router
